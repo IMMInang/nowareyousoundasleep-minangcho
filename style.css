@@ -1,0 +1,65 @@
+/* 1. 기본 초기화 및 전체 화면 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* 터치 시 하이라이트 제거 (모바일 최적화) */
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0400ff;
+    /* 모바일에서 불필요한 고무줄 스크롤 방지 */
+    position: fixed; 
+}
+
+/* 2. 가로 스크롤 컨테이너 */
+#snap-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* 자석 효과 (동기화 중에는 js로 제어할 수도 있지만 기본 설정 유지) */
+    scroll-snap-type: x mandatory;
+    /* 스크롤바 숨기기 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    /* 스크롤 성능 향상 */
+    -webkit-overflow-scrolling: touch;
+}
+
+#snap-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* 3. 개별 영상 섹션 (JS에서 side에 따라 제어됨) */
+.video-section {
+    flex: 0 0 100vw; /* 너비 고정 */
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden; /* 중요: 옆으로 튀어나온 영상 절반을 가림 */
+    background-color: #0400ff;
+}
+
+/* 4. 영상 요소 (아이폰 7 하드웨어 가속 통합) */
+.video-element {
+    /* JS에서 width: 200vw로 설정되므로 height와 object-fit만 고정 */
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; /* 스크롤 간섭 방지 */
+    
+    /* 하드웨어 가속 및 깜빡임 방지 (통합) */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
